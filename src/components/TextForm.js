@@ -8,6 +8,7 @@ export default function TextForm(props) {
       let text = document.getElementById("myTextarea");
       text.select();
       navigator.clipboard.writeText(text.value);
+      document.getSelection().removeAllRanges();
       setbtnText('Copied');
     }
     const [btnText, setbtnText] = useState("Copy Text");
@@ -33,20 +34,20 @@ export default function TextForm(props) {
     <div className="container">
         <h1>{props.headline}</h1>
       <div className="mb-3">
-        <textarea className="form-control" placeholder="Enter text here" style={{backgroundColor : props.mode==='dark'?'grey':'white', color: props.mode==='dark'?'white':'black'}} value={text} onChange={upChange} id="myTextarea" rows="4"></textarea>
+        <textarea className="form-control" placeholder="Enter text here" style={{backgroundColor : props.mode==='dark'?'#13466e':'white', color: props.mode==='dark'?'white':'black'}} value={text} onChange={upChange} id="myTextarea" rows="4"></textarea>
       </div>
-      <button className="btn btn-primary mx-2" onClick={upClick} >Convert to Uppercase</button>
-      <button className="btn btn-primary mx-2" onClick={loClick} >Convert to Lowercase</button>
-      <button className="btn btn-primary mx-2" onClick={removSpace}>Remove Extra Spaces</button>
-      <button className="btn btn-primary mx-2" onClick={copyText}>{btnText}</button>
-      <button className="btn btn-primary mx-2" onClick={clearClick} >Clear</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={upClick} >Convert to Uppercase</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={loClick} >Convert to Lowercase</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={removSpace}>Remove Extra Spaces</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={copyText}>{btnText}</button>
+      <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={clearClick} >Clear</button>
     </div>
     <div className="container my-2">
         <h2>Your text summary</h2>
-        <p>{text.split(" ").filter((t) => t!=="").length} words and {text.length} characters</p>
-        <p>It would take you {0.008 * text.split(" ").length} minutes to read the whole paragraph. </p>
+        <p>{text.split(/\s+/).filter((t) => t!=="").length} words and {text.length} characters</p>
+        <p>It would take you {0.008 * text.split(" ").filter((t) => t!=="").length} minutes to read the whole paragraph. </p>
         <h3>Preview</h3>
-        <p>{text.length>0?text:"Enter text to preview it..."}</p>
+        <p>{text.length>0?text:"Nothing to preview..."}</p>
     </div>
     </>
   );
